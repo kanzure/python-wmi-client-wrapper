@@ -5,7 +5,9 @@ There are a handful of injection vulnerabilities in this, so don't expose it
 directly to end-users.
 """
 
+import csv
 import sh
+from StringIO import StringIO
 
 class WmiClientWrapper(object):
     """
@@ -74,6 +76,9 @@ class WmiClientWrapper(object):
         # execute the command
         output = sh.wmic(*arguments)
 
+        # just to be sure? sh is weird sometimes.
+        output = str(output)
+
         # and now parse the output
         return WmiClientWrapper._parse_wmic_output(output)
 
@@ -82,4 +87,14 @@ class WmiClientWrapper(object):
         """
         Parses output from the wmic command and returns json.
         """
-        raise NotImplementedError
+        # remove newlines and whitespace from the beginning and end
+        output = output.strip()
+
+        # just skip the first line
+        output = "\n".join(output.split("\n")[1:])
+
+        # well.. it's not quite a file
+        strio = StringIO(output)
+
+        # TODO: don't hardcode "|"
+        return list(csv.DictReader(strio, delimiter="|"))
