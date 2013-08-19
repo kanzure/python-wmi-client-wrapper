@@ -41,7 +41,7 @@ class WmiClientWrapper(object):
 
         # the format is user%pass
         # NOTE: this is an injection vulnerability
-        userpass = "{username}%{password}".format(username=username, password=password)
+        userpass = "{username}%{password}".format(username=self.username, password=self.password)
 
         arguments.append(userpass)
 
