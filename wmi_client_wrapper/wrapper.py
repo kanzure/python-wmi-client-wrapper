@@ -83,7 +83,7 @@ class WmiClientWrapper(object):
         return WmiClientWrapper._parse_wmic_output(output)
 
     @classmethod
-    def _parse_wmic_output(output):
+    def _parse_wmic_output(output, delimiter="|"):
         """
         Parses output from the wmic command and returns json.
         """
@@ -97,4 +97,4 @@ class WmiClientWrapper(object):
         strio = StringIO(output)
 
         # TODO: don't hardcode "|"
-        return list(csv.DictReader(strio, delimiter="|"))
+        return list(csv.DictReader(strio, delimiter=delimiter))
