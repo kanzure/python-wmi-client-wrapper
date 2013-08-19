@@ -1,0 +1,18 @@
+CLASS: Win32_Group
+Caption|Description|Domain|InstallDate|LocalAccount|Name|SID|SIDType|Status
+WIN2K8_32\Administrators|Administrators have complete and unrestricted access to the computer/domain|WIN2K8_32|(null)|True|Administrators|S-1-5-32-544|4|OK
+WIN2K8_32\Backup Operators|Backup Operators can override security restrictions for the sole purpose of backing up or restoring files|WIN2K8_32|(null)|True|Backup Operators|S-1-5-32-551|4|OK
+WIN2K8_32\Certificate Service DCOM Access|Members of this group are allowed to connect to Certification Authorities in the enterprise|WIN2K8_32|(null)|True|Certificate Service DCOM Access|S-1-5-32-574|4|OK
+WIN2K8_32\Cryptographic Operators|Members are authorized to perform cryptographic operations.|WIN2K8_32|(null)|True|Cryptographic Operators|S-1-5-32-569|4|OK
+WIN2K8_32\Distributed COM Users|Members are allowed to launch, activate and use Distributed COM objects on this machine.|WIN2K8_32|(null)|True|Distributed COM Users|S-1-5-32-562|4|OK
+WIN2K8_32\Event Log Readers|Members of this group can read event logs from local machine|WIN2K8_32|(null)|True|Event Log Readers|S-1-5-32-573|4|OK
+WIN2K8_32\Guests|Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted|WIN2K8_32|(null)|True|Guests|S-1-5-32-546|4|OK
+WIN2K8_32\IIS_IUSRS|Built-in group used by Internet Information Services.|WIN2K8_32|(null)|True|IIS_IUSRS|S-1-5-32-568|4|OK
+WIN2K8_32\Network Configuration Operators|Members in this group can have some administrative privileges to manage configuration of networking features|WIN2K8_32|(null)|True|Network Configuration Operators|S-1-5-32-556|4|OK
+WIN2K8_32\Performance Log Users|Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer|WIN2K8_32|(null)|True|Performance Log Users|S-1-5-32-559|4|OK
+WIN2K8_32\Performance Monitor Users|Members of this group can access performance counter data locally and remotely|WIN2K8_32|(null)|True|Performance Monitor Users|S-1-5-32-558|4|OK
+WIN2K8_32\Power Users|Power Users are included for backwards compatibility and possess limited administrative powers|WIN2K8_32|(null)|True|Power Users|S-1-5-32-547|4|OK
+WIN2K8_32\Print Operators|Members can administer domain printers|WIN2K8_32|(null)|True|Print Operators|S-1-5-32-550|4|OK
+WIN2K8_32\Remote Desktop Users|Members in this group are granted the right to logon remotely|WIN2K8_32|(null)|True|Remote Desktop Users|S-1-5-32-555|4|OK
+WIN2K8_32\Replicator|Supports file replication in a domain|WIN2K8_32|(null)|True|Replicator|S-1-5-32-552|4|OK
+WIN2K8_32\Users|Users are prevented from making accidental or intentional system-wide changes and can run most applications|WIN2K8_32|(null)|True|Users|S-1-5-32-545|4|OK
