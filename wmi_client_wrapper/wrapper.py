@@ -36,12 +36,12 @@ class WmiClientWrapper(object):
         """
         arguments = []
 
-        # for specifying the username
-        arguments.append("-U")
-
         # the format is user%pass
         # NOTE: this is an injection vulnerability
-        userpass = "{username}%{password}".format(username=self.username, password=self.password)
+        userpass = "--user={username}%{password}".format(
+            username=self.username,
+            password=self.password,
+        )
 
         arguments.append(userpass)
 
