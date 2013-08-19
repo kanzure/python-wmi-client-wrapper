@@ -94,7 +94,7 @@ class WmiClientWrapper(object):
         return WmiClientWrapper._parse_wmic_output(output, delimiter=delimiter)
 
     @classmethod
-    def _parse_wmic_output(output, delimiter="|"):
+    def _parse_wmic_output(cls, output, delimiter="|"):
         """
         Parses output from the wmic command and returns json.
         """
