@@ -1,0 +1,15 @@
+# precompiled python
+*.pyc
+
+# no binaries
+*.exe
+
+# swap files for vim
+.*.swp
+
+# swap files for gedit
+*~
+
+# python packaging
+wmi_client_wrapper.egg-info/
+dist/
