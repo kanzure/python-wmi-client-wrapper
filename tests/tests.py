@@ -19,6 +19,20 @@ class TestCases(unittest.TestCase):
     def test_object_creation(self):
         wmic = wmi.WmiClientWrapper(username="Administrator", password="password", host="192.168.1.173")
 
+    def test_delimiter_in_setup(self):
+        expected_delimiter = "FOOBAR"
+
+        wmic = wmi.WmiClientWrapper(
+            username="Administrator",
+            password="password",
+            host="192.168.1.173",
+            delimiter=expected_delimiter,
+        )
+
+        output = " ".join(wmic._setup_params())
+
+        self.assertIn(expected_delimiter, output)
+
 class MoreTestCases(unittest.TestCase):
     def setUp(self):
         self.wmic = wmi.WmiClientWrapper(

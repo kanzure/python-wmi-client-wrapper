@@ -19,7 +19,7 @@ class WmiClientWrapper(object):
     it directly to end-users.
     """
 
-    def __init__(self, username="Administrator", password=None, host=None):
+    def __init__(self, username="Administrator", password=None, host=None, delimiter="|"):
         assert username
         assert password
         assert host # assume host is up
@@ -28,6 +28,8 @@ class WmiClientWrapper(object):
         self.username = username
         self.password = password
         self.host = host
+
+        self.delimiter = delimiter
 
     def _make_credential_args(self):
         """
@@ -52,6 +54,12 @@ class WmiClientWrapper(object):
 
         return arguments
 
+    def _setup_params(self):
+        """
+        Makes extra configuration that gets passed to wmic.
+        """
+        return ["--delimiter={delimiter}".format(delimiter=self.delimiter)]
+
     def _construct_query(self, klass):
         """
         Makes up a WMI query based on a given class.
@@ -70,8 +78,11 @@ class WmiClientWrapper(object):
         # let's make the query construction independent
         queryx = self._construct_query(klass)
 
+        # and these are just configuration
+        setup = self._setup_params()
+
         # construct the arguments to wmic
-        arguments = credentials + [queryx]
+        arguments = setup + credentials + [queryx]
 
         # execute the command
         output = sh.wmic(*arguments)
@@ -80,7 +91,7 @@ class WmiClientWrapper(object):
         output = str(output)
 
         # and now parse the output
-        return WmiClientWrapper._parse_wmic_output(output)
+        return WmiClientWrapper._parse_wmic_output(output, delimiter=delimiter)
 
     @classmethod
     def _parse_wmic_output(output, delimiter="|"):
