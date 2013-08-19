@@ -14,7 +14,14 @@ pip install wmi-client-wrapper
 
 ```
 import wmi_client_wrapper as wmi
-output = wmi.query("Win32_Processor")
+
+wmic = wmi.WmiClientWrapper(
+    username="Administrator",
+    password="password",
+    host="192.168.1.149",
+)
+
+output = wmic.query("Win32_Processor")
 ```
 
 ## testing
