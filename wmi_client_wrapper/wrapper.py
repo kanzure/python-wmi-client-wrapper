@@ -1,0 +1,85 @@
+"""
+Houses the wrapper for wmi-client.
+
+There are a handful of injection vulnerabilities in this, so don't expose it
+directly to end-users.
+"""
+
+import sh
+
+class WmiClientWrapper(object):
+    """
+    Wrap wmi-client. Creating an instance of the wrapper will make a security
+    context through which all future queries will be executed. It's basically
+    just a convenient way to remember the username, password and host.
+
+    There are a handful of injection vulnerabilities in this, so don't expose
+    it directly to end-users.
+    """
+
+    def __init__(self, username="Administrator", password=None, host=None):
+        assert username
+        assert password
+        assert host # assume host is up
+
+        # store the credentials for later
+        self.username = username
+        self.password = password
+        self.host = host
+
+    def _make_credential_args(self):
+        """
+        Makes credentials that get passed to wmic. This assembles a list of
+        arguments.
+        """
+        arguments = []
+
+        # for specifying the username
+        arguments.append("-U")
+
+        # the format is user%pass
+        # NOTE: this is an injection vulnerability
+        userpass = "{username}%{password}".format(username=username, password=password)
+
+        arguments.append(userpass)
+
+        # the format for ip addresses and host names is //
+        hostaddr = "//{host}".format(host=self.host)
+
+        arguments.append(hostaddr)
+
+        return arguments
+
+    def _construct_query(self, klass):
+        """
+        Makes up a WMI query based on a given class.
+        """
+        # NOTE: this is an injection vulnerability
+        queryx = "SELECT * FROM {klass}".format(klass=klass)
+        return queryx
+
+    def query(self, klass):
+        """
+        Executes a query using the wmi-client command.
+        """
+        # i don't want to have to repeat the -U stuff
+        credentials = self._make_credential_args()
+
+        # let's make the query construction independent
+        queryx = self._construct_query(klass)
+
+        # construct the arguments to wmic
+        arguments = credentials + [queryx]
+
+        # execute the command
+        output = sh.wmic(*arguments)
+
+        # and now parse the output
+        return WmiClientWrapper._parse_wmic_output(output)
+
+    @classmethod
+    def _parse_wmic_output(output):
+        """
+        Parses output from the wmic command and returns json.
+        """
+        raise NotImplementedError
