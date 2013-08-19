@@ -3,6 +3,10 @@ import mock
 
 import wmi_client_wrapper as wmi
 
+import os
+
+datapath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/")
+
 class TestCases(unittest.TestCase):
     def test_object_creation_raises_without_username(self):
         with self.assertRaises(Exception):
@@ -32,6 +36,26 @@ class TestCases(unittest.TestCase):
         output = " ".join(wmic._setup_params())
 
         self.assertIn(expected_delimiter, output)
+
+    def test__parse_wmic_output(self):
+        filepath = os.path.join(datapath, "group.txt")
+
+        with open(filepath) as wmic_output_file_handler:
+            # get the test data
+            wmic_output = wmic_output_file_handler.read()
+
+            # parse the data (run the function we're testing)
+            result = wmi.WmiClientWrapper._parse_wmic_output(wmic_output, delimiter="|")
+
+            # true statements that should be true
+            self.assertTrue(isinstance(result, list))
+            self.assertTrue(isinstance(result[0], dict))
+
+            # expected keys are expected
+            row = result[0]
+            self.assertIn("Caption", row)
+            self.assertIn("Description", row)
+            self.assertIn("Domain", row)
 
 class MoreTestCases(unittest.TestCase):
     def setUp(self):
