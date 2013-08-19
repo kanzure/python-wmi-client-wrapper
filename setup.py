@@ -23,7 +23,7 @@ requires = [
 
 setup(
     name="wmi-client-wrapper",
-    version="0.0.0",
+    version="0.0.1",
     description="Linux-only wrapper around wmi-client for WMI (Windows)",
     long_description=open("README.md", "r").read(),
     license="BSD",
@@ -37,7 +37,6 @@ setup(
     platforms="any",
     classifiers=[
         "License :: OSI Approved :: BSD License",
-        "Operating System :: Linux",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
