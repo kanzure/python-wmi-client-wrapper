@@ -19,5 +19,19 @@ class TestCases(unittest.TestCase):
     def test_object_creation(self):
         wmic = wmi.WmiClientWrapper(username="Administrator", password="password", host="192.168.1.173")
 
+class MoreTestCases(unittest.TestCase):
+    def setUp(self):
+        self.wmic = wmi.WmiClientWrapper(
+            username="boop",
+            password="beep",
+            host="127.0.0.2",
+        )
+
+    def tearDown(self):
+        del self.wmic
+
+    def test__make_credential_args(self):
+        args = self.wmic._make_credential_args()
+
 if __name__ == "__main__":
     unittest.main()
