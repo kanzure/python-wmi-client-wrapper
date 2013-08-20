@@ -107,8 +107,11 @@ class WmiClientWrapper(object):
         # well.. it's not quite a file
         strio = StringIO(output)
 
-        # TODO: don't hardcode "|"
-        return list(csv.DictReader(strio, delimiter=delimiter))
+        # read the csv data
+        items = list(csv.DictReader(strio, delimiter=delimiter))
+
+        # walk the dictionaries!
+        return WmiClientWrapper._fix_dictionary_output(items)
 
     @classmethod
     def _fix_dictionary_output(cls, incoming):
