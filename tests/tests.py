@@ -57,6 +57,56 @@ class TestCases(unittest.TestCase):
             self.assertIn("Description", row)
             self.assertIn("Domain", row)
 
+class DictionaryWalkingTestCases(unittest.TestCase):
+    def test_basic_dictionary_output(self):
+        incoming = {}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertEqual(incoming, output)
+
+    def test_null_conversion(self):
+        incoming = {"hello": "(null)"}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertNotEqual(incoming, output)
+        self.assertIn("hello", output)
+        self.assertEqual(output["hello"], None)
+
+    def test_true_conversion(self):
+        keyname = "beep"
+        incoming = {keyname: "True"}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertNotEqual(incoming, output)
+        self.assertIn(keyname, output)
+        self.assertEqual(output[keyname], True)
+        self.assertTrue(output[keyname] is True)
+
+    def test_false_conversion(self):
+        keyname = "beep"
+        incoming = {keyname: "False"}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertNotEqual(incoming, output)
+        self.assertIn(keyname, output)
+        self.assertEqual(output[keyname], False)
+        self.assertTrue(output[keyname] is False)
+
+    def test_nested_null_conversion(self):
+        keyname = "boop"
+        incoming = {keyname: {keyname: "(null)"}}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertNotEqual(incoming, output)
+        self.assertIn(keyname, output)
+        self.assertIn(keyname, output[keyname])
+        self.assertEqual(output[keyname][keyname], None)
+
 class MoreTestCases(unittest.TestCase):
     def setUp(self):
         self.wmic = wmi.WmiClientWrapper(

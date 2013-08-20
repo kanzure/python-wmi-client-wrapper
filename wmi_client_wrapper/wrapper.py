@@ -109,3 +109,44 @@ class WmiClientWrapper(object):
 
         # TODO: don't hardcode "|"
         return list(csv.DictReader(strio, delimiter=delimiter))
+
+    @classmethod
+    def _fix_dictionary_output(cls, incoming):
+        """
+        The dictionary doesn't exactly match the traditional python-wmi output.
+        For example, there's "True" instead of True. Integer values are also
+        quoted. Values that should be "None" are "(null)".
+
+        This can be fixed by walking the tree.
+
+        The Windows API is able to return the types, but here we're just
+        guessing randomly. But guessing should work in most cases. There are
+        some instances where a value might happen to be an integer but has
+        other situations where it's a string. In general, the rule of thumb
+        should be to cast to whatever you actually need, instead of hoping that
+        the output will always be an integer or will always be a string..
+        """
+        output = dict()
+
+        for (key, value) in incoming.items():
+            if value == "(null)":
+                output[key] = None
+            elif value == "True":
+                output[key] = True
+            elif value == "False":
+                output[key] = False
+            elif isinstance(value, str) and value.isdigit():
+                output[key] = int(value)
+            elif isinstance(value, str) and value[0] == "(" and value[-1] == ")":
+                # convert to a list with a single entry
+                output[key] = [value[1:-1]]
+            elif isinstance(value, str):
+                try:
+                    output[key] = float(value)
+                except ValueError:
+                    # dunno what else.. just set it to the original string value
+                    output[key] = value
+            elif isinstance(value, dict):
+                output[key] = cls._fix_dictionary_output(value)
+
+        return output
