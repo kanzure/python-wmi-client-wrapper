@@ -13,3 +13,4 @@
 # python packaging
 wmi_client_wrapper.egg-info/
 dist/
+build/
