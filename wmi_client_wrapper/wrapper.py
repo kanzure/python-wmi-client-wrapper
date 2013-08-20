@@ -146,17 +146,11 @@ class WmiClientWrapper(object):
                     output[key] = True
                 elif value == "False":
                     output[key] = False
-                elif isinstance(value, str) and value.isdigit():
-                    output[key] = int(value)
                 elif isinstance(value, str) and len(value) > 1 and value[0] == "(" and value[-1] == ")":
                     # convert to a list with a single entry
                     output[key] = [value[1:-1]]
                 elif isinstance(value, str):
-                    try:
-                        output[key] = float(value)
-                    except ValueError:
-                        # dunno what else.. just set it to the original string value
-                        output[key] = value
+                    output[key] = value
                 elif isinstance(value, dict):
                     output[key] = cls._fix_dictionary_output(value)
 
