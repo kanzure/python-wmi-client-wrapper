@@ -91,7 +91,7 @@ class WmiClientWrapper(object):
         output = str(output)
 
         # and now parse the output
-        return WmiClientWrapper._parse_wmic_output(output, delimiter=delimiter)
+        return WmiClientWrapper._parse_wmic_output(output, delimiter=self.delimiter)
 
     @classmethod
     def _parse_wmic_output(cls, output, delimiter="|"):
