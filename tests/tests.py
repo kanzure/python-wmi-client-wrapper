@@ -107,6 +107,15 @@ class DictionaryWalkingTestCases(unittest.TestCase):
         self.assertIn(keyname, output[keyname])
         self.assertEqual(output[keyname][keyname], None)
 
+    def test_lists_with_embedded_dictionaries(self):
+        incoming = [{"beep": "(null)"}]
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
+        self.assertNotEqual(incoming, output)
+        self.assertIn("beep", output[0])
+        self.assertEqual(output[0]["beep"], None)
+
 class MoreTestCases(unittest.TestCase):
     def setUp(self):
         self.wmic = wmi.WmiClientWrapper(
