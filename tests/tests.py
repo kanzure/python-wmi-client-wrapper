@@ -107,6 +107,13 @@ class DictionaryWalkingTestCases(unittest.TestCase):
         self.assertIn(keyname, output[keyname])
         self.assertEqual(output[keyname][keyname], None)
 
+    def test_string_length(self):
+        # used to crash wth "IndexError: string index out of range"
+        keyname = "boop"
+        incoming = {keyname: ""}
+
+        output = wmi.WmiClientWrapper._fix_dictionary_output(incoming)
+
     def test_lists_with_embedded_dictionaries(self):
         incoming = [{"beep": "(null)"}]
 

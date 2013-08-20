@@ -148,7 +148,7 @@ class WmiClientWrapper(object):
                     output[key] = False
                 elif isinstance(value, str) and value.isdigit():
                     output[key] = int(value)
-                elif isinstance(value, str) and value[0] == "(" and value[-1] == ")":
+                elif isinstance(value, str) and len(value) > 1 and value[0] == "(" and value[-1] == ")":
                     # convert to a list with a single entry
                     output[key] = [value[1:-1]]
                 elif isinstance(value, str):
