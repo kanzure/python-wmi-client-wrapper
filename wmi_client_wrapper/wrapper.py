@@ -77,7 +77,7 @@ class WmiClientWrapper(object):
 
         # Let's make the query construction independent, but also if there's a
         # space then it's probably just a regular query.
-        if " " not in queryx:
+        if " " not in klass:
             queryx = self._construct_query(klass)
         else:
             query = klass
