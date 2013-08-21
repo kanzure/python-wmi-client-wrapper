@@ -75,8 +75,12 @@ class WmiClientWrapper(object):
         # i don't want to have to repeat the -U stuff
         credentials = self._make_credential_args()
 
-        # let's make the query construction independent
-        queryx = self._construct_query(klass)
+        # Let's make the query construction independent, but also if there's a
+        # space then it's probably just a regular query.
+        if " " not in queryx:
+            queryx = self._construct_query(klass)
+        else:
+            query = klass
 
         # and these are just configuration
         setup = self._setup_params()
