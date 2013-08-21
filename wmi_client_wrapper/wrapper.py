@@ -80,7 +80,7 @@ class WmiClientWrapper(object):
         if " " not in klass:
             queryx = self._construct_query(klass)
         else:
-            query = klass
+            queryx = klass
 
         # and these are just configuration
         setup = self._setup_params()
