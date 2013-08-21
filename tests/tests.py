@@ -137,5 +137,11 @@ class MoreTestCases(unittest.TestCase):
     def test__make_credential_args(self):
         args = self.wmic._make_credential_args()
 
+    @mock.patch("wmi_client_wrapper.wrapper.sh.wmic")
+    def test_query_calls(self, mock_sh_wmic):
+        self.wmic.query("")
+
+        self.assertTrue(mock_sh_wmic.called)
+
 if __name__ == "__main__":
     unittest.main()
