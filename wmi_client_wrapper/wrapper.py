@@ -19,7 +19,7 @@ class WmiClientWrapper(object):
     it directly to end-users.
     """
 
-    def __init__(self, username="Administrator", password=None, host=None, delimiter="|"):
+    def __init__(self, username="Administrator", password=None, host=None, delimiter="\n"):
         assert username
         assert password
         assert host # assume host is up
@@ -94,7 +94,7 @@ class WmiClientWrapper(object):
         return WmiClientWrapper._parse_wmic_output(output, delimiter=self.delimiter)
 
     @classmethod
-    def _parse_wmic_output(cls, output, delimiter="|"):
+    def _parse_wmic_output(cls, output, delimiter="\n"):
         """
         Parses output from the wmic command and returns json.
         """
