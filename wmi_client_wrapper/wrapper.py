@@ -105,14 +105,37 @@ class WmiClientWrapper(object):
         # remove newlines and whitespace from the beginning and end
         output = output.strip()
 
-        # just skip the first line
-        output = "\n".join(output.split("\n")[1:])
+        # Quick parser hack- make sure that the initial file or section is also
+        # counted in the upcoming split.
+        if output[:7] == "CLASS: ":
+            output = "\n" + output
 
-        # well.. it's not quite a file
-        strio = StringIO(output)
+        # There might be multiple files in the output. Track how many there
+        # should be so that errors can be raised later if something is
+        # inconsistent.
+        expected_sections_count = output.count("\nCLASS: ")
 
-        # read the csv data
-        items = list(csv.DictReader(strio, delimiter=delimiter))
+        # Split up the file into individual sections. Each one corresponds to a
+        # separate csv file.
+        sections = output.split("\nCLASS: ")
+
+        # The split causes an empty string as the first member of the list and
+        # it should be removed because it's junk.
+        if sections[0] == "":
+            sections = sections[1:]
+
+        assert len(sections) is expected_sections_count
+
+        items = []
+
+        for section in sections:
+            # remove the first line because it has the query class
+            section = "\n".join(section.split("\n")[1:])
+
+            strio = StringIO(section)
+
+            moredata = list(csv.DictReader(strio, delimiter=delimiter))
+            items.extend(moredata)
 
         # walk the dictionaries!
         return WmiClientWrapper._fix_dictionary_output(items)
