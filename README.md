@@ -21,7 +21,7 @@ wmic = wmi.WmiClientWrapper(
     host="192.168.1.149",
 )
 
-output = wmic.query("Win32_Processor")
+output = wmic.query("SELECT * FROM Win32_Processor")
 ```
 
 ## testing
