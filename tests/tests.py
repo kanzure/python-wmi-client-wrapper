@@ -57,6 +57,30 @@ class TestCases(unittest.TestCase):
             self.assertIn("Description", row)
             self.assertIn("Domain", row)
 
+    def test__parse_wmic_output_merging(self):
+        filepath = os.path.join(datapath, "multiple.txt")
+
+        with open(filepath) as wmic_output_file_handler:
+            # get the test data
+            wmic_output = wmic_output_file_handler.read()
+
+            # parse the data (run the function we're testing)
+            result = wmi.WmiClientWrapper._parse_wmic_output(wmic_output, delimiter="%")
+
+            # There are multiple classes listed in the data file. But they all
+            # have the same number of columns. Therefore I think it's probably
+            # okay to just merge all of the entries together into the same
+            # list. Another possibility is to just return a list of lists,
+            # instead of a list of dicts.
+            self.assertTrue(isinstance(result, list))
+            self.assertTrue(isinstance(result[0], dict))
+
+            row = result[0]
+            self.assertIn("Caption", row)
+            self.assertIn("Description", row)
+
+            self.assertNotIn({"AcceptPause": "CLASS: Win32_Service"}, result)
+
 class DictionaryWalkingTestCases(unittest.TestCase):
     def test_basic_dictionary_output(self):
         incoming = {}
@@ -137,11 +161,13 @@ class MoreTestCases(unittest.TestCase):
     def test__make_credential_args(self):
         args = self.wmic._make_credential_args()
 
+    @mock.patch("wmi_client_wrapper.wrapper.WmiClientWrapper._parse_wmic_output")
     @mock.patch("wmi_client_wrapper.wrapper.sh.wmic")
-    def test_query_calls(self, mock_sh_wmic):
+    def test_query_calls(self, mock_sh_wmic, mock_parser):
         self.wmic.query("")
 
         self.assertTrue(mock_sh_wmic.called)
+        self.assertTrue(mock_parser.called)
 
 if __name__ == "__main__":
     unittest.main()
