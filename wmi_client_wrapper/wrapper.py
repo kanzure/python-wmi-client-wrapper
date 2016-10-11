@@ -131,6 +131,7 @@ class WmiClientWrapper(object):
         for section in sections:
             # remove the first line because it has the query class
             section = "\n".join(section.split("\n")[1:])
+            section = section.replace('\r\n', '\\r\\n')
 
             strio = StringIO(section)
 
