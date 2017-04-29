@@ -19,7 +19,7 @@ class WmiClientWrapper(object):
     it directly to end-users.
     """
 
-    def __init__(self, username="Administrator", password=None, host=None, delimiter="\01"):
+    def __init__(self, username="Administrator", password=None, host=None, namespace='//./root/cimv2', delimiter="\01"):
         assert username
         assert password
         assert host # assume host is up
@@ -30,7 +30,8 @@ class WmiClientWrapper(object):
         self.host = host
 
         self.delimiter = delimiter
-
+        self.namespace = namespace
+        
     def _make_credential_args(self):
         """
         Makes credentials that get passed to wmic. This assembles a list of
@@ -51,7 +52,10 @@ class WmiClientWrapper(object):
         hostaddr = "//{host}".format(host=self.host)
 
         arguments.append(hostaddr)
-
+        # the format for namespace
+        space= "--namespace={namespace}".format(namespace=self.namespace)
+        
+        arguments.append(space)
         return arguments
 
     def _setup_params(self):
