@@ -22,6 +22,16 @@ wmic = wmi.WmiClientWrapper(
 )
 
 output = wmic.query("SELECT * FROM Win32_Processor")
+
+#get FibrePort Info
+wmic = wmi.WmiClientWrapper(
+    username="Administrator",
+    password="password",
+    host="192.168.1.1",
+    namespace='//./root/WMI'
+)
+output = wmic.query('Select * FROM MSFC_FibrePortNPIVAttributes')
+
 ```
 
 ## testing
